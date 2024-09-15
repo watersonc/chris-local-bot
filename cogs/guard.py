@@ -21,10 +21,12 @@ class GuardCommand(commands.Cog):
         announce_embed = GuardAnnounce()
         
         if last_message:
-            await last_message.edit(embed=announce_embed, view=view)
+            await channel.purge(limit=10)
+            await channel.send(embed=announce_embed,view=view)
+            await channel.send("тапайте кнопочку, мужики <@&1258754004284870726>")
         else:
-            await channel.send(embed=announce_embed, view=view)
-
+            await channel.send(embed=announce_embed,view=view)
+            
 def setup(bot):
     bot.add_cog(GuardCommand(bot))
-    print("Верификация включена.")
+    print("guardian activated!")

@@ -18,7 +18,7 @@ class SetsCommand(commands.Cog):
         last_message = await channel.history(limit=1).find(lambda m: m.author == self.bot.user)
         select_view = SelectSets()
         announce_embed = SetsAnnounce()
-        
+
         if last_message:
             await last_message.edit(embed=announce_embed, view=select_view)
         else:
@@ -26,4 +26,4 @@ class SetsCommand(commands.Cog):
 
 def setup(bot):
     bot.add_cog(SetsCommand(bot))
-    print("СИСТЕМА ГОТОВА НА ВЗЛЁТ ТРЕШ ЖЕСТЬ ОМГ")
+    print("setter activated!")

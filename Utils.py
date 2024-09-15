@@ -8,8 +8,8 @@ import sqlite3
 class GuardAnnounce(disnake.Embed):
     def __init__(self):
         super().__init__(
-            title="***  йо  ***",
-            color=disnake.Color.from_rgb(47, 49, 54),
+            title=" ***  йо  ***",
+            color=disnake.Color.from_rgb(43, 45, 49),
         )
 
 class SetsAnnounce(disnake.Embed):
@@ -25,12 +25,13 @@ class SetsAnnounce(disnake.Embed):
 class GuardButton(View):
     def __init__(self):
         super().__init__()
-
-    @disnake.ui.button(label="ㅤ", style=disnake.ButtonStyle.gray, custom_id="grd")
+    @disnake.ui.button(label="ㅤ",style=disnake.ButtonStyle.gray, custom_id="grd")
     async def yes_button(self, button: disnake.ui.Button, interaction: disnake.MessageInteraction):
         role = disnake.utils.get(interaction.guild.roles, id=verify_role)
+        delrole = disnake.utils.get(interaction.guild.roles, id=noverify_role)
         await interaction.response.send_message("давай, друг, пока. до встречи на той стороне!!", ephemeral=True)
         await interaction.author.add_roles(role)
+        await interaction.author.remove_roles(delrole)
 
 class ModalsView(disnake.ui.Modal):
     def __init__(self, one):

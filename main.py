@@ -11,7 +11,7 @@ import disnake
 from disnake.ext import commands
 
 
-bot = commands.Bot(command_prefix="ewrffwe", intents=disnake.Intents.all())
+bot = commands.Bot(command_prefix="ch!", intents=disnake.Intents.all(), test_guilds=[1258009098125971601])
 
 if __name__ == "__main__":
     for file in os.listdir("./cogs"):

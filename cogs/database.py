@@ -40,4 +40,4 @@ class Database(commands.Cog):
 
 def setup(client):
     client.add_cog(Database(client))
-    print("БД работает.")
+    print("databases activated!")
