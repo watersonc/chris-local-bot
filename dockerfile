@@ -2,4 +2,4 @@ FROM python:3.9
 
 WORKDIR .
 
-CMD ["python main.py"]
+CMD ["cd chris-local-bot", "python main.py"]
