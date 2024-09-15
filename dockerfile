@@ -1,7 +1,11 @@
-FROM python:3.9
+FROM python:3
+FROM disnakeDev/disnake
 
-WORKDIR .
+RUN mkdir -p /usr/src/bot
+WORKDIR /usr/src/bot
 
-RUN cd chris-local-bot
+COPY . .
 
-CMD ["python", "main.py"]
+RUN pip install -r requirements.txt
+
+CMD [ "python", "main.py" ]
