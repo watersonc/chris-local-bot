@@ -2,7 +2,6 @@ import disnake
 from disnake.ext import commands
 from Utils import SelectSets
 from Utils import SetsAnnounce
-from Utils import SetsAnnounce1
 from config import *
 
 class SetsCommand(commands.Cog):
@@ -16,12 +15,14 @@ class SetsCommand(commands.Cog):
         
         if not channel:
             return
-        #main_embed = SetsAnnounce1()
+        last_message = await channel.history(limit=1).find(lambda m: m.author == self.bot.user)
         select_view = SelectSets()
-
         announce_embed = SetsAnnounce()
-        await channel.send(embed=announce_embed)
-        #await channel.send(embed=main_embed, view=select_view)
+        
+        if last_message:
+            await last_message.edit(embed=announce_embed, view=select_view)
+        else:
+            await channel.send(embed=announce_embed, view=select_view)
 
 def setup(bot):
     bot.add_cog(SetsCommand(bot))

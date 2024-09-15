@@ -18,4 +18,4 @@ if __name__ == "__main__":
         if file.endswith(".py"):
             bot.load_extension(f"cogs.{file[:-3]}")
 
-    bot.run(TOKEN)
+bot.run(TOKEN)

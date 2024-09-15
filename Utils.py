@@ -5,6 +5,13 @@ from disnake.ui import Button, View
 import sqlite3
 
 
+class GuardAnnounce(disnake.Embed):
+    def __init__(self):
+        super().__init__(
+            title="***  йо  ***",
+            color=disnake.Color.from_rgb(47, 49, 54),
+        )
+
 class SetsAnnounce(disnake.Embed):
     def __init__(self):
         super().__init__(
@@ -14,17 +21,16 @@ class SetsAnnounce(disnake.Embed):
             color=disnake.Color.from_rgb(47, 49, 54),
         )
         self.set_image(url=f'{NABOR_ICON}')
-        
-class SetsAnnounce1(disnake.Embed):
-    def __init__(self):
-        super().__init__(
-            description=(
-                f'{TEXT}'
-            ),
-            color=disnake.Color.from_rgb(47, 49, 54),
-        )
-        self.set_image(url=f'{POLOSKA}')
 
+class GuardButton(View):
+    def __init__(self):
+        super().__init__()
+
+    @disnake.ui.button(label="ㅤ", style=disnake.ButtonStyle.gray, custom_id="grd")
+    async def yes_button(self, button: disnake.ui.Button, interaction: disnake.MessageInteraction):
+        role = disnake.utils.get(interaction.guild.roles, id=verify_role)
+        await interaction.response.send_message("давай, друг, пока. до встречи на той стороне!!", ephemeral=True)
+        await interaction.author.add_roles(role)
 
 class ModalsView(disnake.ui.Modal):
     def __init__(self, one):
@@ -79,7 +85,8 @@ class ModalsView(disnake.ui.Modal):
                 await interaction.response.send_message(embed=embed, ephemeral=True)
             else:
                 await interaction.response.send_message('Канал не найден.', ephemeral=True)
-                
+
+
 class SelectSets(disnake.ui.View):
     def __init__(self) -> None:
         super().__init__(timeout=None)
@@ -117,9 +124,6 @@ class SelectSets(disnake.ui.View):
             await inter.response.send_modal(modal=ModalsView('FAMILY'))
         else:
             pass
-
-
-
 
 class SetsEmbed(disnake.Embed):
     def __init__(self, interaction, two):
