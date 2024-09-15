@@ -24,7 +24,7 @@ DATABASE = "main.db"
 # КАРТИНКИ
 
 BACK_IMG = "" # ссылка на изображение при подачи # in v0.2
-NABOR_ICON = "https://media.discordapp.net/attachments/1132632306503397396/1137091819977584810/IMG_20230804_213643.jpg" # ссылка на картинку в наборах 
+NABOR_ICON = "https://i.imgur.com/rXYZiUX.jpeg" # ссылка на картинку в наборах 
 POLOSKA = "https://media.discordapp.net/attachments/774042908718399509/830486108978544680/1111.png"
 
 # КАНАЛЫ

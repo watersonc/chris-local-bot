@@ -16,12 +16,12 @@ class SetsCommand(commands.Cog):
         
         if not channel:
             return
-        main_embed = SetsAnnounce1()
+        #main_embed = SetsAnnounce1()
         select_view = SelectSets()
 
         announce_embed = SetsAnnounce()
-        await channel.send(embed=announce_embed, view=select_view)
-        await channel.send(embed=main_embed, view=select_view)
+        await channel.send(embed=announce_embed)
+        #await channel.send(embed=main_embed, view=select_view)
 
 def setup(bot):
     bot.add_cog(SetsCommand(bot))
