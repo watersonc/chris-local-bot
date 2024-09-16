@@ -24,7 +24,7 @@ class SetsAnnounce(disnake.Embed):
 
 class GuardButton(View):
     def __init__(self):
-        super().__init__()
+        super().__init__(timeout=None)
     @disnake.ui.button(label="ㅤ",style=disnake.ButtonStyle.gray, custom_id="grd")
     async def yes_button(self, button: disnake.ui.Button, interaction: disnake.MessageInteraction):
         role = disnake.utils.get(interaction.guild.roles, id=verify_role)
