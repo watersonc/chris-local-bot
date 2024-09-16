@@ -6,7 +6,6 @@ from config import *
 
 class SetsCommand(commands.Cog):
     def __init__(self, bot):
-        super().__init__(timeout=None)
         self.bot = bot
 
     @commands.Cog.listener()

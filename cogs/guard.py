@@ -6,8 +6,7 @@ from config import *
 
 
 class GuardCommand(commands.Cog):
-    def __init__(self, bot):
-        super().__init__(timeout=None)
+    def __init__(self, bot, timeout=None):
         self.bot = bot
 
     @commands.Cog.listener()
