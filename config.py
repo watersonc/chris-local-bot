@@ -1,7 +1,5 @@
-TOKEN = 'MTI4NDgxNzcyMDk2MTAwNzY4OQ.GGLLhI.ohMPhRrSV3JfrYmFXCZXtipwp3WQJ_CnADe7uw'
+TOKEN = 'MTI1ODAwODkxNzQ2NDcxMTE3OQ.GD6twi.9djG0cSNdjJ8jwaujaXf5bKGIEBaY6ywV5jR5Y'
 DATABASE = "main.db"
-
-STATUS = "tgc - vladikcute"
 
 IMAGE = "https://i.imgur.com/eu0sEGT.png"
 Q_IMAGE = "https://emojiguide.org/images/emoji/8/42i2qsgsfqz8.png"
