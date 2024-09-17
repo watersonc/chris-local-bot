@@ -1,11 +1,11 @@
-FROM python:3.9
+FROM python:3
+FROM disnakeDev/disnake
 
-WORKDIR /app
+RUN mkdir -p /usr/src/bot
+WORKDIR /usr/src/bot
 
-COPY requirements.txt /app/requirements.txt
+COPY . .
 
-RUN pip install disnake
+RUN pip install -r requirements.txt
 
-COPY . /app
-
-CMD ["python", "main.py"]
+CMD [ "python", "main.py" ]

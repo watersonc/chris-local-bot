@@ -1,17 +1,9 @@
 import os
-import ssl
-import json
-import time
-from config import *
-import sqlite3
-
-from multiprocessing import Process, freeze_support
-
 import disnake
 from disnake.ext import commands
+from config import TOKEN, GUILD_ID
 
-
-bot = commands.Bot(command_prefix="ch!", intents=disnake.Intents.all(), test_guilds=[1258009098125971601])
+bot = commands.Bot(command_prefix="ch!", intents=disnake.Intents.all(), test_guilds=[GUILD_ID])
 
 if __name__ == "__main__":
     for file in os.listdir("./cogs"):
