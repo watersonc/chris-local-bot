@@ -1,0 +1,111 @@
+import disnake
+from disnake.ext import commands
+import sqlite3
+from config import DATABASE, localban_role, noverify_role  # Убедитесь, что эти переменные определены в config
+
+class AdminCommands(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.slash_command(name="banloc", description="Забанить пользователя и записать причину")
+    async def banloc(self, inter: disnake.ApplicationCommandInteraction, user: disnake.User, reason: str):
+        # Отложенный ответ, чтобы избежать тайм-аута
+        await inter.response.defer(ephemeral=True)
+
+        # Проверка, есть ли у пользователя права на бан
+        if not inter.author.guild_permissions.ban_members:
+            await inter.edit_original_response(content="У вас нет прав для использования этой команды.")
+            return
+
+        user_id = user.id
+
+        # Проверка, забанен ли пользователь
+        with sqlite3.connect(DATABASE) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT user_id FROM banned_users WHERE user_id = ?", (user_id,))
+            existing_ban = cursor.fetchone()
+            
+            if existing_ban:
+                await inter.edit_original_response(content="Ошибка: пользователь уже забанен.")
+                return
+            
+            # Поиск участника в гильдии
+            member = inter.guild.get_member(user_id)
+            if not member:
+                await inter.edit_original_response(content="Пользователь не найден на этом сервере.")
+                return
+
+            # Удаление всех ролей, кроме @everyone
+            everyone_role_id = inter.guild.id
+            roles_to_remove = [role for role in member.roles if role.id != everyone_role_id]
+            try:
+                if roles_to_remove:
+                    await member.remove_roles(*roles_to_remove, reason="Удаление всех ролей перед назначением роли бана")
+            except disnake.Forbidden:
+                await inter.edit_original_response(content="У меня нет прав для удаления ролей у этого пользователя.")
+                return
+
+            # Назначение роли бана
+            ban_role = disnake.utils.get(inter.guild.roles, id=localban_role)
+            try:
+                if ban_role:
+                    await member.add_roles(ban_role, reason=f"Забанен: {reason}")
+            except disnake.Forbidden:
+                await inter.edit_original_response(content="У меня нет прав для назначения роли бана.")
+                return
+
+            # Запись информации о бане в базу данных
+            cursor.execute("INSERT INTO banned_users (user_id, reason) VALUES (?, ?)", (user_id, reason))
+            conn.commit()
+
+        # Ответ пользователю
+        await inter.edit_original_response(content=f"Пользователь {user.mention} был забанен с причиной: {reason}")
+
+    @commands.slash_command(name="unbanloc", description="Разбанить пользователя по упоминанию")
+    async def unbanloc(self, inter: disnake.ApplicationCommandInteraction, user: disnake.User):
+        # Отложенный ответ
+        await inter.response.defer(ephemeral=True)
+
+        # Проверка на наличие пользователя в базе данных
+        user_id = user.id
+        with sqlite3.connect(DATABASE) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT user_id FROM banned_users WHERE user_id = ?", (user_id,))
+            banned_user = cursor.fetchone()
+
+            if not banned_user:
+                await inter.edit_original_response(content="Ошибка: пользователь не найден в базе данных.")
+                return
+
+            # Разбанивание пользователя
+            member = inter.guild.get_member(user_id)
+            if member:
+                # Удаление всех ролей, кроме @everyone
+                everyone_role_id = inter.guild.id
+                roles_to_remove = [role for role in member.roles if role.id != everyone_role_id]
+                try:
+                    if roles_to_remove:
+                        await member.remove_roles(*roles_to_remove, reason="Удаление всех ролей перед назначением роли noverify")
+                except disnake.Forbidden:
+                    await inter.edit_original_response(content="У меня нет прав для удаления ролей у этого пользователя.")
+                    return
+
+                # Назначение роли noverify
+                noverify_role_obj = disnake.utils.get(inter.guild.roles, id=noverify_role)
+                try:
+                    if noverify_role_obj:
+                        await member.add_roles(noverify_role_obj, reason="Разбанен: назначение роли noverify")
+                except disnake.Forbidden:
+                    await inter.edit_original_response(content="У меня нет прав для назначения роли noverify.")
+                    return
+
+            # Удаление пользователя из базы данных
+            cursor.execute("DELETE FROM banned_users WHERE user_id = ?", (user_id,))
+            conn.commit()
+
+        # Ответ пользователю
+        await inter.edit_original_response(content=f"Пользователь {user.mention} был разбанен.")
+
+def setup(bot):
+    bot.add_cog(AdminCommands(bot))
+    print("AdminCommands loaded!")
