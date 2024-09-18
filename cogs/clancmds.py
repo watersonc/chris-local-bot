@@ -37,14 +37,12 @@ class ActionCMD(commands.Cog):
         # Extract user_id from custom_id
         custom_id_parts = inter.data.custom_id.split("_")
         if len(custom_id_parts) != 2:
-            await inter.followup.send("error: wrong custom_id", ephemeral=True)
             return
         
         action, user_id_str = custom_id_parts
         try:
             user_id = int(user_id_str)
         except ValueError:
-            await inter.followup.send("error: wrong user_id", ephemeral=True)
             return
         
         # Find user in the guild
