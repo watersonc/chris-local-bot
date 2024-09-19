@@ -35,7 +35,8 @@ class Database(commands.Cog):
                 "banned_users": """
                     CREATE TABLE IF NOT EXISTS banned_users (
                         user_id INTEGER PRIMARY KEY,
-                        reason TEXT
+                        reason TEXT,
+                        by INTEGER
                     )
                 """,
             }
