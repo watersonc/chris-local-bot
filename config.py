@@ -1,4 +1,4 @@
-TOKEN = 'MTI1ODAwODkxNzQ2NDcxMTE3OQ.GD6twi.9djG0cSNdjJ8jwaujaXf5bKGIEBaY6ywV5jR5Y'
+TOKEN = ''
 DATABASE = "main.db"
 
 IMAGE = "https://i.imgur.com/eu0sEGT.png"
